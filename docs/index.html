@@ -104,14 +104,20 @@
 	        layer.bindPopup(popupContent, { closeButton: false });
 	      
 	        // hover highlight
+		let closeTimer;
+
 	        layer.on({
 	          mouseover: function (e) {
+		    clearTimeout(closeTimer)
 	            e.target.setStyle(hoverStyle);
 	            e.target.openPopup();
 	          },
 	          mouseout: function (e) {
-	            geojsonLayer.resetStyle(e.target);
-	            e.target.closePopup();
+		    const target = e.target;
+		    closeTimer = setTimeout(function () {
+	                geojsonLayer.resetStyle(e.target);
+	                e.target.closePopup();
+		    }, 1200);
 	          }
 	        });
 	      }
