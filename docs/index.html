@@ -86,26 +86,35 @@
           style: farmStyle,
 
           onEachFeature: function (feature, layer) {
-            const name = feature.properties.Name || 'Farm';
+	      const name = feature.properties.Name || 'Farm';
 
-            // popup on click
-            layer.bindPopup(
-              `<strong>${name}</strong>`,
-              { closeButton: false }
-            );
-
-            // hover highlight
-            layer.on({
-              mouseover: function (e) {
-                e.target.setStyle(hoverStyle);
-                e.target.openPopup();
-              },
-              mouseout: function (e) {
-                geojsonLayer.resetStyle(e.target);
-                e.target.closePopup();
-              }
-            });
-          }
+	        // build popup content
+  	      let popupContent;
+  	      if (name === 'JOSE GALASTICA') {
+	          popupContent = `
+      	      <strong>${name}</strong><br>
+      	      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeGDwKXlgq2TDpndePaKckbCJo1n46l-TaurdSCYquMQ&s=10"
+	                 style="width:160px; margin:6px 0; display:block; border-radius:4px;" /><br>
+	            <a href="https://google.com" target="_blank">Learn more →</a>
+	          `;
+	        } else {
+	          popupContent = `<strong>${name}</strong>`;
+	        }
+	      
+	        layer.bindPopup(popupContent, { closeButton: false });
+	      
+	        // hover highlight
+	        layer.on({
+	          mouseover: function (e) {
+	            e.target.setStyle(hoverStyle);
+	            e.target.openPopup();
+	          },
+	          mouseout: function (e) {
+	            geojsonLayer.resetStyle(e.target);
+	            e.target.closePopup();
+	          }
+	        });
+	      }
         }).addTo(map);
 
         // store ref for resetStyle
